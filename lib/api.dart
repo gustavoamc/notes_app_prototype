@@ -6,7 +6,7 @@ class Api {
   static String baseUrl() {
     var url = kReleaseMode
       ? "https://placeholder.azurewebsites.net/api"
-      : Platform.isAndroid
+      : Platform.isAndroid //not checking for kIsWeb because app is not intended to to be used on web.
         ? "10.0.2.2:5055"
         : "localhost:5055";
 

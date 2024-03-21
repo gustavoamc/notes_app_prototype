@@ -7,14 +7,17 @@ import 'package:notes_app_prototype/src/note/note_model.dart';
 class NoteService {
   static const String url = '/api/Note/';
   static const Map<String, String> header = {
-    'Content-Type': 'application/json; charset=UTF-8',
+    'Content-Type': 'application/json; charset=utf-8',
   };
 
-  static Future<List<NoteModel>?> getNotes() async {
+  static Future<List<NoteModel>> getNotes() async {
     var response = await http.get(
       Uri.http(Api.baseUrl(), url),
       headers: header,
     );
+
+    // await Future.delayed(
+    //     const Duration(seconds: 10)); //TODO remove after testing
 
     if (Api.isSuccessful(response.statusCode)) {
       var data = jsonDecode(response.body);
@@ -22,7 +25,7 @@ class NoteService {
       return List<NoteModel>.from(data.map((x) => NoteModel.fromJson(x)));
     }
 
-    return null;
+    return <NoteModel>[];
   }
 
   static Future<NoteModel> getNote(int id) async {
@@ -42,7 +45,7 @@ class NoteService {
     var response = await http.post(
       Uri.http(Api.baseUrl(), url),
       headers: header,
-      body: note.toJson(),
+      body: noteModelToJson(note),
     );
 
     if (Api.isSuccessful(response.statusCode)) {
@@ -56,7 +59,7 @@ class NoteService {
     var response = await http.put(
       Uri.http(Api.baseUrl(), url),
       headers: header,
-      body: note.toJson(),
+      body: noteModelToJson(note),
     );
 
     if (Api.isSuccessful(response.statusCode)) {
